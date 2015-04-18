@@ -84,6 +84,7 @@ public class GameStage implements Stage
             {
                 e.removeMe = true;
                 enemies.set(e.origc - 'a', null);
+                StageManager.stages.pop();
             }
             if (e.removeMe)
             {
@@ -112,6 +113,8 @@ public class GameStage implements Stage
                     Behavior behavior = BasicBehavior.instance;
                     if (sector >= 2 && (LD32.random.nextInt(10) == 0))
                         behavior = SpawnerBehavior.instance;
+                    else if (sector >= 3 && (LD32.random.nextInt(15) == 0))
+                        behavior = BombBehavior.instance;
                     Enemy e = new Enemy(this, word, Math.max((float) maxSpeed - 35 * word.length(), 50), behavior);
                     spawnCount++;
                     alive.add(e);
@@ -135,6 +138,7 @@ public class GameStage implements Stage
                     selected.word = selected.word.substring(1);
                     if (selected.word.length() == 0)
                     {
+                        selected.alive = false;
                         enemies.set(selected.origc - 'a', null);
                         selected = null;
                     }

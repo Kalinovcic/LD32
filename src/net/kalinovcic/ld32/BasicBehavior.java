@@ -25,6 +25,12 @@ public class BasicBehavior implements Behavior
     }
     
     @Override
+    public void init(Enemy enemy)
+    {
+        
+    }
+    
+    @Override
     public void update(Enemy enemy, double timeDelta)
     {
         

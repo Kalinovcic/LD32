@@ -6,5 +6,6 @@ public interface Behavior
     public float getSize();
     public float getSpeedMul();
     
+    public void init(Enemy enemy);
     public void update(Enemy enemy, double timeDelta);
 }

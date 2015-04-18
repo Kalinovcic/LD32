@@ -25,12 +25,18 @@ public class SpawnerBehavior implements Behavior
     }
     
     @Override
+    public void init(Enemy enemy)
+    {
+        enemy.cooldown = 3;
+    }
+    
+    @Override
     public void update(Enemy enemy, double timeDelta)
     {
         enemy.cooldown -= timeDelta;
         while (enemy.cooldown < 0)
         {
-            enemy.cooldown += 3;
+            enemy.cooldown += 2;
             char c = (char) (LD32.random.nextInt('z' - 'a' + 1) + 'a');
             if (enemy.game.enemies.get(c - 'a') == null)
             {

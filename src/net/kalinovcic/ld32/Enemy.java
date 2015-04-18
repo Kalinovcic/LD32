@@ -16,7 +16,7 @@ public class Enemy extends Sprite
     public int health;
     
     public Behavior behavior;
-    public double cooldown = 3;
+    public double cooldown;
     
     public Enemy(GameStage game, String word, float speed, Behavior behavior)
     {
@@ -32,6 +32,7 @@ public class Enemy extends Sprite
         health = word.length();
         this.behavior = behavior;
         this.speed = vely = speed * behavior.getSpeedMul();
+        behavior.init(this);
     }
     
     public void update(double timeDelta)
@@ -66,6 +67,7 @@ public class Enemy extends Sprite
 
         if (x - w / 2.0f < 0) glTranslatef(-(x - w / 2.0f), 0.0f, 0.0f);
         if (x + w / 2.0f > LD32.WW) glTranslatef(LD32.WW - (x + w / 2.0f), 0.0f, 0.0f);
+        if (y - this.h / 2 - h < 0) glTranslatef(0.0f, -(y - this.h / 2 - h), 0.0f);
 
         glBindTexture(GL_TEXTURE_2D, 0);
         glColor4f(0.3f, 0.3f, 0.3f, 0.7f);
