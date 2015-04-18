@@ -4,12 +4,14 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class Enemy extends Sprite
 {
-    private String word;
-    private float speed;
+    public char origc;
+    public String word;
+    public float speed;
     
     public Enemy(String word, int texture, float x, float size, float speed)
     {
         super(texture, x, -size / 2.0f, size, size, 180.0f);
+        this.origc = word.charAt(0);
         this.word = word;
         this.speed = speed;
     }

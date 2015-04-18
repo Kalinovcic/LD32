@@ -8,6 +8,7 @@ import java.util.Random;
 import javax.swing.JOptionPane;
 
 import org.lwjgl.LWJGLException;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
@@ -31,6 +32,7 @@ public class LD32
             Display.setDisplayMode(new DisplayMode(WW, WH));
             Display.setFullscreen(false);
             Display.create();
+            Keyboard.create();
         }
         catch (LWJGLException e)
         {
@@ -86,6 +88,7 @@ public class LD32
         glDeleteTextures(texturePL);
         font.destroy();
         
+        Keyboard.destroy();
         Display.destroy();
     }
     
