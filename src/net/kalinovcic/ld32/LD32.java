@@ -15,7 +15,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class LD32
 {
-    public static int WW = 360;
+    public static int WW = 720;
     public static int WH = 720;
     public static Random random = new Random();
     public static TrueTypeFont font;
@@ -36,6 +36,8 @@ public class LD32
         {
             LD32.report("Failed to create the display.", e);
         }
+        
+        Dictionary.load();
         
         texturePL = TextureLoader.load("res/pl.png");
         
