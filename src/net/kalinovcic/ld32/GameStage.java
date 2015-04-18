@@ -3,7 +3,9 @@ package net.kalinovcic.ld32;
 import static org.lwjgl.opengl.GL11.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.lwjgl.input.Keyboard;
 
@@ -12,6 +14,9 @@ public class GameStage implements Stage
     private Sprite player;
     private Enemy selected;
     private List<Enemy> enemies = new ArrayList<Enemy>();
+    
+    private Set<Enemy> alive = new HashSet<Enemy>();
+    private Set<Bullet> bullets = new HashSet<Bullet>();
 
     private double spawnTime = 2;
     private double spawnCountdown = spawnTime;
@@ -27,19 +32,31 @@ public class GameStage implements Stage
     @Override
     public void update(double timeDelta)
     {
-        for (char i = 'a'; i <= 'z'; i++)
+        Set<Bullet> removeMeBullets = new HashSet<Bullet>();
+        for (Bullet b : bullets)
         {
-            Enemy e = enemies.get(i - 'a');
-            if (e != null)
+            b.update(timeDelta);
+            if (b.removeMe)
+                removeMeBullets.add(b);
+        }
+        bullets.removeAll(removeMeBullets);
+        
+        Set<Enemy> removeMeEnemies = new HashSet<Enemy>();
+        for (Enemy e : alive)
+        {
+            e.update(timeDelta);
+            if (e.alive && e.y > (LD32.WH + e.h / 2.0))
             {
-                e.update(timeDelta);
-                if (e.y > (LD32.WH + e.h / 2.0))
-                {
-                    if (e == selected) selected = null;
-                    enemies.set(i - 'a', null);
-                }
+                e.removeMe = true;
+                enemies.set(e.origc - 'a', null);
+            }
+            if (e.removeMe)
+            {
+                if (e == selected) selected = null;
+                removeMeEnemies.add(e);
             }
         }
+        alive.removeAll(removeMeEnemies);
         
         spawnCountdown -= timeDelta;
         while (spawnCountdown < 0)
@@ -54,7 +71,11 @@ public class GameStage implements Stage
                 }
             if (valid)
                 if (enemies.get(word.charAt(0) - 'a') == null)
-                    enemies.set(word.charAt(0) - 'a', new Enemy(word, LD32.texturePL, 16 + LD32.random.nextFloat() * (LD32.WW - 32), 32, 300 / word.length()));
+                {
+                    Enemy e = new Enemy(word, LD32.texturePL, 16 + LD32.random.nextFloat() * (LD32.WW - 32), 32, Math.max(300 - 25 * word.length(), 50));
+                    alive.add(e);
+                    enemies.set(word.charAt(0) - 'a', e);
+                }
             spawnCountdown += spawnTime;
         }
         
@@ -68,6 +89,8 @@ public class GameStage implements Stage
             {
                 if (selected.word.charAt(0) == c)
                 {
+                    bullets.add(new Bullet(c, player.x, player.y, selected, 1200.0f));
+                    
                     selected.word = selected.word.substring(1);
                     if (selected.word.length() == 0)
                     {
@@ -90,20 +113,45 @@ public class GameStage implements Stage
         glBindTexture(GL_TEXTURE_2D, 0);
         
         glBegin(GL_QUADS);
-        glColor3f(1.0f, 1.0f, 0.0f);
+        glColor3f(0.1f, 0.1f, 0.1f);
         glVertex2f(0.0f, 0.0f);
         glVertex2f(LD32.WW, 0.0f);
-        glColor3f(0.0f, 1.0f, 1.0f);
+        glColor3f(0.1f, 0.1f, 0.3f);
         glVertex2f(LD32.WW, LD32.WH);
         glVertex2f(0.0f, LD32.WH);
         glEnd();
         
-        player.render();
-        for (char i = 'a'; i <= 'z'; i++)
+        /*
+        if (selected != null)
         {
-            Enemy e = enemies.get(i - 'a');
-            if (e != null)
-                e.render();
+            double dx = selected.x - player.x;
+            double dy = selected.y - player.y;
+            double dist = Math.sqrt(dx * dx + dy * dy);
+            double angle = Math.toDegrees(Math.atan2(dy, dx));
+            
+            glPushMatrix();
+            glTranslatef(player.x, player.y, 0.0f);
+            glRotatef((float) (-90 + angle), 0.0f, 0.0f, 1.0f);
+            
+            float beamyoff = (System.currentTimeMillis() % 250) / -250.0f * 16;
+            
+            glBindTexture(GL_TEXTURE_2D, LD32.textureBeam);
+            glColor3f(1.0f, 1.0f, 1.0f);
+            glBegin(GL_QUADS);
+            glTexCoord2f(0.0f, beamyoff); glVertex2f(-8, 0);
+            glTexCoord2f(1.0f, beamyoff); glVertex2f(8, 0);
+            glTexCoord2f(1.0f, beamyoff + (float) dist / 16); glVertex2f(8, (float) dist);
+            glTexCoord2f(0.0f, beamyoff + (float) dist / 16); glVertex2f(-8, (float) dist);
+            glEnd();
+            
+            glPopMatrix();
         }
+        */
+        
+        player.render();
+        for (Bullet b : bullets)
+            b.render();
+        for (Enemy e : alive)
+            e.render();
     }
 }

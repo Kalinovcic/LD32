@@ -21,6 +21,7 @@ public class LD32
     public static Random random = new Random();
     public static TrueTypeFont font;
     public static int texturePL;
+    public static int textureBeam;
     
     public static void main(String[] args)
     {
@@ -40,8 +41,9 @@ public class LD32
         }
         
         Dictionary.load();
-        
+
         texturePL = TextureLoader.load("res/pl.png");
+        textureBeam = TextureLoader.load("res/beam.png");
         
         try
         {
@@ -84,8 +86,9 @@ public class LD32
             Display.update();
             Display.sync(60);
         }
-        
+
         glDeleteTextures(texturePL);
+        glDeleteTextures(textureBeam);
         font.destroy();
         
         Keyboard.destroy();

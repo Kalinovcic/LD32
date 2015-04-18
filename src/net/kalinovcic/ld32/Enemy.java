@@ -7,18 +7,29 @@ public class Enemy extends Sprite
     public char origc;
     public String word;
     public float speed;
+    public float vely;
+
+    public boolean removeMe = false;
+    public boolean alive = true;
+    public int health;
     
     public Enemy(String word, int texture, float x, float size, float speed)
     {
         super(texture, x, -size / 2.0f, size, size, 180.0f);
         this.origc = word.charAt(0);
         this.word = word;
-        this.speed = speed;
+        this.speed = vely = speed;
+        health = word.length();
     }
     
     public void update(double timeDelta)
     {
-        y += speed * timeDelta;
+        if (vely < speed)
+        {
+            vely += timeDelta * speed * 4;
+            if (vely > speed) vely = speed;
+        }
+        y += vely * timeDelta;
     }
     
     @Override
@@ -26,6 +37,8 @@ public class Enemy extends Sprite
     {
         super.render();
 
+        if (word.length() <= 0) return;
+        
         glPushMatrix();
         glTranslatef(x, y - h / 2, 0.0f);
 
