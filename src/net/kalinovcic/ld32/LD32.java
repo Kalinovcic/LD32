@@ -1,5 +1,9 @@
 package net.kalinovcic.ld32;
 
+import java.util.Random;
+
+import javax.swing.JOptionPane;
+
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -8,6 +12,9 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class LD32
 {
+    public static Random random = new Random();
+    public static int texturePL;
+    
     public static void main(String[] args)
     {
         try
@@ -23,6 +30,8 @@ public class LD32
         {
             LD32.report("Failed to create the display.", e);
         }
+        
+        texturePL = TextureLoader.load("res/pl.png");
         
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
@@ -54,11 +63,14 @@ public class LD32
             Display.sync(60);
         }
         
+        glDeleteTextures(texturePL);
+        
         Display.destroy();
     }
     
     public static void report(String msg, Exception e)
     {
-        
+        JOptionPane.showMessageDialog(null, msg + "\nException: " + e, "Error!", JOptionPane.ERROR_MESSAGE);
+        System.exit(1);
     }
 }
