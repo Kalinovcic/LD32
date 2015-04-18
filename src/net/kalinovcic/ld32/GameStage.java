@@ -13,13 +13,24 @@ public class GameStage implements Stage
 {
     private Sprite player;
     private Enemy selected;
-    private List<Enemy> enemies = new ArrayList<Enemy>();
-    
-    private Set<Enemy> alive = new HashSet<Enemy>();
-    private Set<Bullet> bullets = new HashSet<Bullet>();
+    public List<Enemy> enemies = new ArrayList<Enemy>();
 
-    private double spawnTime = 2;
+    public Set<Enemy> alive = new HashSet<Enemy>();
+    public Set<Enemy> toAdd = new HashSet<Enemy>();
+    public Set<Bullet> bullets = new HashSet<Bullet>();
+
+    public double spawnTime;
+    public double maxSpeed;
+    public long targetSpawns;
+    
     private double spawnCountdown = spawnTime;
+    private long spawnCount;
+
+    private long sector = 0;
+
+    private double calmTimer;
+    private float currentR, currentG, currentB;
+    private float targetR, targetG, targetB;
     
     public GameStage()
     {
@@ -32,6 +43,30 @@ public class GameStage implements Stage
     @Override
     public void update(double timeDelta)
     {
+        if (spawnCount >= targetSpawns && alive.isEmpty())
+        {
+            sector++;
+            spawnCount = 0;
+
+            targetR = LD32.random.nextFloat() * 0.1f + (LD32.random.nextBoolean() ? 0.3f : 0.0f) + 0.1f;
+            targetG = LD32.random.nextFloat() * 0.1f + (LD32.random.nextBoolean() ? 0.3f : 0.0f) + 0.1f;
+            targetB = LD32.random.nextFloat() * 0.1f + (LD32.random.nextBoolean() ? 0.3f : 0.0f) + 0.1f;
+            
+            calmTimer = 2.0;
+        }
+
+        currentR += (targetR - currentR) * (float) timeDelta;
+        currentG += (targetG - currentG) * (float) timeDelta;
+        currentB += (targetB - currentB) * (float) timeDelta;
+        
+        spawnTime = Math.max(5 - sector * 0.7, 1.0);
+        maxSpeed = Math.min(70 + sector * 40, 600.0);
+        targetSpawns = 15 + sector * 3;
+        
+        calmTimer -= timeDelta;
+        if (calmTimer < 0) calmTimer = 0;
+        else return;
+        
         Set<Bullet> removeMeBullets = new HashSet<Bullet>();
         for (Bullet b : bullets)
         {
@@ -56,6 +91,8 @@ public class GameStage implements Stage
                 removeMeEnemies.add(e);
             }
         }
+        alive.addAll(toAdd);
+        toAdd.clear();
         alive.removeAll(removeMeEnemies);
         
         spawnCountdown -= timeDelta;
@@ -70,9 +107,13 @@ public class GameStage implements Stage
                     break;
                 }
             if (valid)
-                if (enemies.get(word.charAt(0) - 'a') == null)
+                if (enemies.get(word.charAt(0) - 'a') == null && spawnCount < targetSpawns)
                 {
-                    Enemy e = new Enemy(word, LD32.texturePL, 16 + LD32.random.nextFloat() * (LD32.WW - 32), 32, Math.max(300 - 25 * word.length(), 50));
+                    Behavior behavior = BasicBehavior.instance;
+                    if (sector >= 2 && (LD32.random.nextInt(10) == 0))
+                        behavior = SpawnerBehavior.instance;
+                    Enemy e = new Enemy(this, word, Math.max((float) maxSpeed - 35 * word.length(), 50), behavior);
+                    spawnCount++;
                     alive.add(e);
                     enemies.set(word.charAt(0) - 'a', e);
                 }
@@ -89,7 +130,7 @@ public class GameStage implements Stage
             {
                 if (selected.word.charAt(0) == c)
                 {
-                    bullets.add(new Bullet(c, player.x, player.y, selected, 1200.0f));
+                    bullets.add(new Bullet(c, player.x, player.y, selected, 800.0f));
                     
                     selected.word = selected.word.substring(1);
                     if (selected.word.length() == 0)
@@ -101,6 +142,7 @@ public class GameStage implements Stage
                 }
                 else
                 {
+                    selected.vely += 50;
                     // TODO: beep beep!
                 }
             }
@@ -116,42 +158,24 @@ public class GameStage implements Stage
         glColor3f(0.1f, 0.1f, 0.1f);
         glVertex2f(0.0f, 0.0f);
         glVertex2f(LD32.WW, 0.0f);
-        glColor3f(0.1f, 0.1f, 0.3f);
+        glColor3f(currentR, currentG, currentB);
         glVertex2f(LD32.WW, LD32.WH);
         glVertex2f(0.0f, LD32.WH);
         glEnd();
-        
-        /*
-        if (selected != null)
-        {
-            double dx = selected.x - player.x;
-            double dy = selected.y - player.y;
-            double dist = Math.sqrt(dx * dx + dy * dy);
-            double angle = Math.toDegrees(Math.atan2(dy, dx));
-            
-            glPushMatrix();
-            glTranslatef(player.x, player.y, 0.0f);
-            glRotatef((float) (-90 + angle), 0.0f, 0.0f, 1.0f);
-            
-            float beamyoff = (System.currentTimeMillis() % 250) / -250.0f * 16;
-            
-            glBindTexture(GL_TEXTURE_2D, LD32.textureBeam);
-            glColor3f(1.0f, 1.0f, 1.0f);
-            glBegin(GL_QUADS);
-            glTexCoord2f(0.0f, beamyoff); glVertex2f(-8, 0);
-            glTexCoord2f(1.0f, beamyoff); glVertex2f(8, 0);
-            glTexCoord2f(1.0f, beamyoff + (float) dist / 16); glVertex2f(8, (float) dist);
-            glTexCoord2f(0.0f, beamyoff + (float) dist / 16); glVertex2f(-8, (float) dist);
-            glEnd();
-            
-            glPopMatrix();
-        }
-        */
         
         player.render();
         for (Bullet b : bullets)
             b.render();
         for (Enemy e : alive)
             e.render();
+        
+        // GUI
+
+        glColor3f(1.0f, 1.0f, 0.8f);
+        
+        if (calmTimer > 0)
+            LD32.font.drawString(LD32.WW / 2, LD32.WH / 2, "Sector " + sector, 2.4f, -2.4f, TrueTypeFont.ALIGN_CENTER);
+        else
+            LD32.font.drawString(10.0f, 30.0f, "Sector: " + sector, 0.9f, -0.9f);
     }
 }

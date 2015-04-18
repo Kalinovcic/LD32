@@ -4,6 +4,8 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class Enemy extends Sprite
 {
+    public GameStage game;
+    
     public char origc;
     public String word;
     public float speed;
@@ -13,13 +15,23 @@ public class Enemy extends Sprite
     public boolean alive = true;
     public int health;
     
-    public Enemy(String word, int texture, float x, float size, float speed)
+    public Behavior behavior;
+    public double cooldown = 3;
+    
+    public Enemy(GameStage game, String word, float speed, Behavior behavior)
     {
-        super(texture, x, -size / 2.0f, size, size, 180.0f);
+        this(game, word, behavior.getSize() / 2 + LD32.random.nextFloat() * (LD32.WW - behavior.getSize()), -behavior.getSize(), speed, behavior);
+    }
+    
+    public Enemy(GameStage game, String word, float x, float y, float speed, Behavior behavior)
+    {
+        super(behavior.getTexture(), x, y, behavior.getSize(), behavior.getSize(), 180.0f);
+        this.game = game;
         this.origc = word.charAt(0);
         this.word = word;
-        this.speed = vely = speed;
         health = word.length();
+        this.behavior = behavior;
+        this.speed = vely = speed * behavior.getSpeedMul();
     }
     
     public void update(double timeDelta)
@@ -29,7 +41,14 @@ public class Enemy extends Sprite
             vely += timeDelta * speed * 4;
             if (vely > speed) vely = speed;
         }
+        if (vely > speed)
+        {
+            vely -= timeDelta * speed;
+            if (vely < speed) vely = speed;
+        }
         y += vely * timeDelta;
+        
+        behavior.update(this, timeDelta);
     }
     
     @Override
