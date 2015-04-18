@@ -18,6 +18,8 @@ public class Enemy extends Sprite
     public Behavior behavior;
     public double cooldown;
     
+    public boolean isPickup = false;
+    
     public Enemy(GameStage game, String word, float speed, Behavior behavior)
     {
         this(game, word, behavior.getSize() / 2 + LD32.random.nextFloat() * (LD32.WW - behavior.getSize()), -behavior.getSize(), speed, behavior);

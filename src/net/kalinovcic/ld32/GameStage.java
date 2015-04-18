@@ -23,6 +23,8 @@ public class GameStage implements Stage
     public double maxSpeed;
     public long targetSpawns;
     
+    public int lives = 3;
+    
     private double spawnCountdown = spawnTime;
     private long spawnCount;
 
@@ -84,8 +86,12 @@ public class GameStage implements Stage
             {
                 e.removeMe = true;
                 enemies.set(e.origc - 'a', null);
-                StageManager.stages.pop();
-                break;
+                lives--;
+                if (lives == 0)
+                {
+                    StageManager.stages.pop();
+                    break;
+                }
             }
             if (e.removeMe)
             {
@@ -112,12 +118,19 @@ public class GameStage implements Stage
                 if (enemies.get(word.charAt(0) - 'a') == null && spawnCount < targetSpawns)
                 {
                     Behavior behavior = BasicBehavior.instance;
-                    if (sector >= 2 && (LD32.random.nextInt(10) == 0))
-                        behavior = SpawnerBehavior.instance;
-                    else if (sector >= 3 && (LD32.random.nextInt(15) == 0))
-                        behavior = BombBehavior.instance;
+                    if (LD32.random.nextInt(15) == 0)
+                    {
+                        behavior = PickupLifeBehavior.instance;
+                    }
+                    else
+                    {
+                        if (sector >= 2 && (LD32.random.nextInt(10) == 0))
+                            behavior = SpawnerBehavior.instance;
+                        else if (sector >= 3 && (LD32.random.nextInt(15) == 0))
+                            behavior = BombBehavior.instance;
+                    }
                     Enemy e = new Enemy(this, word, Math.max((float) maxSpeed - 30 * word.length(), 50), behavior);
-                    spawnCount++;
+                    if (!e.isPickup) spawnCount++;
                     alive.add(e);
                     enemies.set(word.charAt(0) - 'a', e);
                 }
@@ -147,7 +160,6 @@ public class GameStage implements Stage
                 }
                 else
                 {
-                    
                     // TODO: beep beep!
                 }
             }
@@ -182,5 +194,23 @@ public class GameStage implements Stage
             LD32.font.drawString(LD32.WW / 2, LD32.WH / 2, "Sector " + sector, 2.4f, -2.4f, TrueTypeFont.ALIGN_CENTER);
         else
             LD32.font.drawString(5, LD32.WH - 5, "Sector: " + sector + " - " + (int) ((spawnCount / (double) targetSpawns) * 100) + "%", 0.9f, -0.9f);
+        
+        float x = LD32.WW - 37;
+        float y = LD32.WH - 37;
+        
+        glColor3f(1.0f, 1.0f, 1.0f);
+        glBindTexture(GL_TEXTURE_2D, LD32.textureLife);
+        
+        glBegin(GL_QUADS);
+        for (int i = 0; i < (lives <= 5 ? lives : 1); i++)
+        {
+            glTexCoord2f(0.0f, 0.0f); glVertex2f(x - i * 35, y);
+            glTexCoord2f(1.0f, 0.0f); glVertex2f(x + 32 - i * 35, y);
+            glTexCoord2f(1.0f, 1.0f); glVertex2f(x + 32 - i * 35, y + 32);
+            glTexCoord2f(0.0f, 1.0f); glVertex2f(x - i * 35, y + 32);
+        }
+        glEnd();
+        
+        if (lives > 5) LD32.font.drawString(x - 40, LD32.WH - 5, lives + "", 0.9f, -0.9f);
     }
 }
