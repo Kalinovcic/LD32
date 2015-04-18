@@ -119,7 +119,7 @@ public class GameStage implements Stage
                 if (enemies.get(word.charAt(0) - 'a') == null && spawnCount < targetSpawns)
                 {
                     Behavior behavior = BasicBehavior.instance;
-                    if (LD32.random.nextInt(15) >= 0)
+                    if (LD32.random.nextInt(15) == 0)
                     {
                         if (LD32.random.nextInt(2) == 0)
                             behavior = PickupLifeBehavior.instance;
