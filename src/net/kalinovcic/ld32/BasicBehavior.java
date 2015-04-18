@@ -1,5 +1,7 @@
 package net.kalinovcic.ld32;
 
+import static org.lwjgl.opengl.GL11.*;
+
 public class BasicBehavior implements Behavior
 {
     public static Behavior instance = new BasicBehavior();
@@ -22,6 +24,12 @@ public class BasicBehavior implements Behavior
     public float getSpeedMul()
     {
         return 1.0f;
+    }
+    
+    @Override
+    public void labelColor()
+    {
+        glColor3f(1.0f, 1.0f, 1.0f);
     }
     
     @Override

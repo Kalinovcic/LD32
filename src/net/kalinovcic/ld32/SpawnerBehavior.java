@@ -1,5 +1,7 @@
 package net.kalinovcic.ld32;
 
+import static org.lwjgl.opengl.GL11.*;
+
 public class SpawnerBehavior implements Behavior
 {
     public static Behavior instance = new SpawnerBehavior();
@@ -9,7 +11,7 @@ public class SpawnerBehavior implements Behavior
     @Override
     public int getTexture()
     {
-        return LD32.texturePL;
+        return LD32.textureSpawner;
     }
     
     @Override
@@ -22,6 +24,12 @@ public class SpawnerBehavior implements Behavior
     public float getSpeedMul()
     {
         return 0.6f;
+    }
+    
+    @Override
+    public void labelColor()
+    {
+        glColor3f(1.0f, 1.0f, 0.0f);
     }
     
     @Override

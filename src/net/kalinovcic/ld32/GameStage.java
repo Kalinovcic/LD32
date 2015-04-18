@@ -59,9 +59,9 @@ public class GameStage implements Stage
         currentG += (targetG - currentG) * (float) timeDelta;
         currentB += (targetB - currentB) * (float) timeDelta;
         
-        spawnTime = Math.max(5 - sector * 0.7, 1.0);
-        maxSpeed = Math.min(70 + sector * 40, 600.0);
-        targetSpawns = 15 + sector * 3;
+        spawnTime = Math.max(5 - sector * 0.4, 1.0);
+        maxSpeed = Math.min(100 + sector * 20, 600.0);
+        targetSpawns = sector * 3;
         
         calmTimer -= timeDelta;
         if (calmTimer < 0) calmTimer = 0;
@@ -85,6 +85,7 @@ public class GameStage implements Stage
                 e.removeMe = true;
                 enemies.set(e.origc - 'a', null);
                 StageManager.stages.pop();
+                break;
             }
             if (e.removeMe)
             {
@@ -115,7 +116,7 @@ public class GameStage implements Stage
                         behavior = SpawnerBehavior.instance;
                     else if (sector >= 3 && (LD32.random.nextInt(15) == 0))
                         behavior = BombBehavior.instance;
-                    Enemy e = new Enemy(this, word, Math.max((float) maxSpeed - 35 * word.length(), 50), behavior);
+                    Enemy e = new Enemy(this, word, Math.max((float) maxSpeed - 30 * word.length(), 50), behavior);
                     spawnCount++;
                     alive.add(e);
                     enemies.set(word.charAt(0) - 'a', e);
@@ -146,7 +147,7 @@ public class GameStage implements Stage
                 }
                 else
                 {
-                    selected.vely += 50;
+                    
                     // TODO: beep beep!
                 }
             }
@@ -180,6 +181,6 @@ public class GameStage implements Stage
         if (calmTimer > 0)
             LD32.font.drawString(LD32.WW / 2, LD32.WH / 2, "Sector " + sector, 2.4f, -2.4f, TrueTypeFont.ALIGN_CENTER);
         else
-            LD32.font.drawString(10.0f, 30.0f, "Sector: " + sector, 0.9f, -0.9f);
+            LD32.font.drawString(5, LD32.WH - 5, "Sector: " + sector + " - " + (int) ((spawnCount / (double) targetSpawns) * 100) + "%", 0.9f, -0.9f);
     }
 }

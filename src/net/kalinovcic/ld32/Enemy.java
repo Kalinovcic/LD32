@@ -78,7 +78,7 @@ public class Enemy extends Sprite
         glVertex2f(-w / 2.0f, -h);
         glEnd();
         
-        glColor3f(1.0f, 1.0f, 1.0f);
+        behavior.labelColor();
         LD32.font.drawString(-4, 0.0f, word, 1.0f, -1.0f, TrueTypeFont.ALIGN_CENTER);
         
         glPopMatrix();

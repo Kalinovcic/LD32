@@ -21,6 +21,8 @@ public class LD32
     public static Random random = new Random();
     public static TrueTypeFont font;
     public static int texturePL;
+    public static int textureSpawner;
+    public static int textureBomb;
     public static int textureBeam;
     
     public static void main(String[] args)
@@ -43,6 +45,8 @@ public class LD32
         Dictionary.load();
 
         texturePL = TextureLoader.load("res/pl.png");
+        textureSpawner = TextureLoader.load("res/spawner.png");
+        textureBomb = TextureLoader.load("res/bomb.png");
         textureBeam = TextureLoader.load("res/beam.png");
         
         try
@@ -88,6 +92,8 @@ public class LD32
         }
 
         glDeleteTextures(texturePL);
+        glDeleteTextures(textureSpawner);
+        glDeleteTextures(textureBomb);
         glDeleteTextures(textureBeam);
         font.destroy();
         

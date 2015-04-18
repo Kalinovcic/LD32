@@ -5,6 +5,7 @@ public interface Behavior
     public int getTexture();
     public float getSize();
     public float getSpeedMul();
+    public void labelColor();
     
     public void init(Enemy enemy);
     public void update(Enemy enemy, double timeDelta);
