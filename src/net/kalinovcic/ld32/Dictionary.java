@@ -17,10 +17,7 @@ public class Dictionary
             BufferedReader bR = new BufferedReader(new FileReader("res/dict.txt"));
             String word;
             while ((word = bR.readLine()) != null)
-            {
                 words.add(word);
-                bR.readLine();
-            }
             bR.close();
         }
         catch (IOException e)
