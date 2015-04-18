@@ -1,5 +1,8 @@
 package net.kalinovcic.ld32;
 
+import java.awt.Font;
+import java.awt.GraphicsEnvironment;
+import java.io.File;
 import java.util.Random;
 
 import javax.swing.JOptionPane;
@@ -12,7 +15,10 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class LD32
 {
+    public static int WW = 360;
+    public static int WH = 720;
     public static Random random = new Random();
+    public static TrueTypeFont font;
     public static int texturePL;
     
     public static void main(String[] args)
@@ -22,7 +28,7 @@ public class LD32
             Display.setTitle("Integral type");
             Display.setResizable(false);
             Display.setVSyncEnabled(true);
-            Display.setDisplayMode(new DisplayMode(360, 720));
+            Display.setDisplayMode(new DisplayMode(WW, WH));
             Display.setFullscreen(false);
             Display.create();
         }
@@ -33,9 +39,21 @@ public class LD32
         
         texturePL = TextureLoader.load("res/pl.png");
         
+        try
+        {
+            Font rf = Font.createFont(Font.TRUETYPE_FONT, new File("res/FreeSans.ttf"));
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(rf);
+            font = new TrueTypeFont(new Font("FreeSans", Font.PLAIN, 24), true, null);
+        }
+        catch (Exception e)
+        {
+            LD32.report("Failed to load the font.", e);
+        }
+        
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
-        glOrtho(0.0f, 360, 720, 0, -1.0f, 1.0f);
+        glOrtho(0.0f, WW, WH, 0, -1.0f, 1.0f);
         
         glMatrixMode(GL_MODELVIEW);
         glEnable(GL_TEXTURE_2D);
@@ -64,6 +82,7 @@ public class LD32
         }
         
         glDeleteTextures(texturePL);
+        font.destroy();
         
         Display.destroy();
     }

@@ -15,7 +15,7 @@ public class GameStage implements Stage
     
     public GameStage()
     {
-        player = new Sprite(LD32.texturePL, 180, 680, 64, 64, 0.0f);
+        player = new Sprite(LD32.texturePL, 180, LD32.WH - 40, 64, 64, 0.0f);
     }
     
     @Override
@@ -25,7 +25,7 @@ public class GameStage implements Stage
         for (Enemy e : enemies)
         {
             e.update(timeDelta);
-            if (e.y > (720 + e.h / 2.0))
+            if (e.y > (LD32.WH + e.h / 2.0))
                 removeList.add(e);
         }
         enemies.removeAll(removeList);
@@ -33,7 +33,7 @@ public class GameStage implements Stage
         spawnCountdown -= timeDelta;
         while (spawnCountdown < 0)
         {
-            enemies.add(new Enemy(LD32.texturePL, 16 + LD32.random.nextFloat() * 344, 32, 100));
+            enemies.add(new Enemy("happiness", LD32.texturePL, 16 + LD32.random.nextFloat() * 344, 32, 100));
             spawnCountdown += spawnTime;
         }
     }
@@ -46,10 +46,10 @@ public class GameStage implements Stage
         glBegin(GL_QUADS);
         glColor3f(1.0f, 1.0f, 0.0f);
         glVertex2f(0.0f, 0.0f);
-        glVertex2f(360.0f, 0.0f);
+        glVertex2f(LD32.WW, 0.0f);
         glColor3f(0.0f, 1.0f, 1.0f);
-        glVertex2f(360.0f, 720.0f);
-        glVertex2f(0.0f, 720.0f);
+        glVertex2f(LD32.WW, LD32.WH);
+        glVertex2f(0.0f, LD32.WH);
         glEnd();
         
         player.render();
