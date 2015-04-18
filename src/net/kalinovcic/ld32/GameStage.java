@@ -32,8 +32,6 @@ public class GameStage implements Stage
     private long sector = 0;
 
     private double calmTimer;
-    private float currentR, currentG, currentB;
-    private float targetR, targetG, targetB;
     
     public GameStage()
     {
@@ -50,17 +48,9 @@ public class GameStage implements Stage
         {
             sector++;
             spawnCount = 0;
-
-            targetR = LD32.random.nextFloat() * 0.1f + (LD32.random.nextBoolean() ? 0.3f : 0.0f) + 0.1f;
-            targetG = LD32.random.nextFloat() * 0.1f + (LD32.random.nextBoolean() ? 0.3f : 0.0f) + 0.1f;
-            targetB = LD32.random.nextFloat() * 0.1f + (LD32.random.nextBoolean() ? 0.3f : 0.0f) + 0.1f;
             
             calmTimer = 2.0;
         }
-
-        currentR += (targetR - currentR) * (float) timeDelta;
-        currentG += (targetG - currentG) * (float) timeDelta;
-        currentB += (targetB - currentB) * (float) timeDelta;
         
         spawnTime = Math.max(5 - sector * 0.4, 1.0);
         maxSpeed = Math.min(100 + sector * 20, 600.0);
@@ -187,15 +177,16 @@ public class GameStage implements Stage
     @Override
     public void render()
     {
-        glBindTexture(GL_TEXTURE_2D, 0);
+        glColor3f(1, 1, 1);
+        glBindTexture(GL_TEXTURE_2D, LD32.textureBG);
+        
+        float yoff = System.currentTimeMillis() % 30000 / 30000.0f;
         
         glBegin(GL_QUADS);
-        glColor3f(0.1f, 0.1f, 0.1f);
-        glVertex2f(0.0f, 0.0f);
-        glVertex2f(LD32.WW, 0.0f);
-        glColor3f(currentR, currentG, currentB);
-        glVertex2f(LD32.WW, LD32.WH);
-        glVertex2f(0.0f, LD32.WH);
+        glTexCoord2f(0.0f, 1.0f + yoff); glVertex2f(0.0f, 0.0f);
+        glTexCoord2f(1.0f, 1.0f + yoff); glVertex2f(LD32.WW, 0.0f);
+        glTexCoord2f(1.0f, 0.0f + yoff); glVertex2f(LD32.WW, LD32.WH);
+        glTexCoord2f(0.0f, 0.0f + yoff); glVertex2f(0.0f, LD32.WH);
         glEnd();
         
         player.render();

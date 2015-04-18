@@ -25,6 +25,7 @@ public class LD32
     public static int textureBomb;
     public static int textureLife;
     public static int textureMissile;
+    public static int textureBG;
     public static int textureBeam;
     
     public static void main(String[] args)
@@ -51,6 +52,7 @@ public class LD32
         textureBomb = TextureLoader.load("res/bomb.png");
         textureLife = TextureLoader.load("res/life.png");
         textureMissile = TextureLoader.load("res/missile.png");
+        textureBG = TextureLoader.load("res/background.png");
         textureBeam = TextureLoader.load("res/beam.png");
         
         try
@@ -100,6 +102,7 @@ public class LD32
         glDeleteTextures(textureBomb);
         glDeleteTextures(textureLife);
         glDeleteTextures(textureMissile);
+        glDeleteTextures(textureBG);
         glDeleteTextures(textureBeam);
         font.destroy();
         
