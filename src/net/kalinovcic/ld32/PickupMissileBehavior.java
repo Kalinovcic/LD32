@@ -2,16 +2,16 @@ package net.kalinovcic.ld32;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public class PickupLifeBehavior extends PickupBehavior
+public class PickupMissileBehavior extends PickupBehavior
 {
-    public static Behavior instance = new PickupLifeBehavior();
+    public static Behavior instance = new PickupMissileBehavior();
     
-    private PickupLifeBehavior() {}
+    private PickupMissileBehavior() {}
     
     @Override
     public int getTexture()
     {
-        return LD32.textureLife;
+        return LD32.textureMissile;
     }
 
     @Override
@@ -35,6 +35,6 @@ public class PickupLifeBehavior extends PickupBehavior
     @Override
     public void onPickup(Enemy pickup)
     {
-        pickup.game.lives++;
+        pickup.game.missiles++;
     }
 }

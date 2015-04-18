@@ -24,6 +24,7 @@ public class GameStage implements Stage
     public long targetSpawns;
     
     public int lives = 3;
+    public int missiles = 0;
     
     private double spawnCountdown = spawnTime;
     private long spawnCount;
@@ -118,9 +119,12 @@ public class GameStage implements Stage
                 if (enemies.get(word.charAt(0) - 'a') == null && spawnCount < targetSpawns)
                 {
                     Behavior behavior = BasicBehavior.instance;
-                    if (LD32.random.nextInt(15) == 0)
+                    if (LD32.random.nextInt(15) >= 0)
                     {
-                        behavior = PickupLifeBehavior.instance;
+                        if (LD32.random.nextInt(2) == 0)
+                            behavior = PickupLifeBehavior.instance;
+                        else
+                            behavior = PickupMissileBehavior.instance;
                     }
                     else
                     {
@@ -139,6 +143,20 @@ public class GameStage implements Stage
         
         while (Keyboard.next())
         {
+            if (missiles > 0 && Keyboard.getEventKeyState() && (Keyboard.getEventKey() == Keyboard.KEY_LCONTROL) || (Keyboard.getEventKey() == Keyboard.KEY_RCONTROL))
+            {
+                for (char i = 'a'; i <= 'z'; i++)
+                    enemies.set(i - 'a', null);
+                for (Enemy e : alive)
+                    if (e.isPickup)
+                        ((PickupBehavior) e.behavior).onPickup(e);
+                alive.clear();
+                bullets.clear();
+                selected = null;
+                
+                missiles--;
+                continue;
+            }
             char c = Keyboard.getEventCharacter();
             if (c < 'a' || c > 'z') continue;
             if (selected == null)
@@ -212,5 +230,21 @@ public class GameStage implements Stage
         glEnd();
         
         if (lives > 5) LD32.font.drawString(x - 40, LD32.WH - 5, lives + "", 0.9f, -0.9f);
+        
+        glColor3f(1.0f, 1.0f, 1.0f);
+        glBindTexture(GL_TEXTURE_2D, LD32.textureMissile);
+        
+        glBegin(GL_QUADS);
+        y -= 35;
+        for (int i = 0; i < (missiles <= 5 ? missiles : 1); i++)
+        {
+            glTexCoord2f(0.0f, 0.0f); glVertex2f(x - i * 35, y);
+            glTexCoord2f(1.0f, 0.0f); glVertex2f(x + 32 - i * 35, y);
+            glTexCoord2f(1.0f, 1.0f); glVertex2f(x + 32 - i * 35, y + 32);
+            glTexCoord2f(0.0f, 1.0f); glVertex2f(x - i * 35, y + 32);
+        }
+        glEnd();
+        
+        if (missiles > 5) LD32.font.drawString(x - 40, LD32.WH - 40, missiles + "", 0.9f, -0.9f);
     }
 }
