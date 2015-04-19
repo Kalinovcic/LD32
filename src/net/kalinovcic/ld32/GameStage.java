@@ -111,9 +111,14 @@ public class GameStage implements Stage
                 lives--;
                 livesLost++;
                 
+                AudioPlayer.setGain(0.5f);
+                AudioPlayer.setPitch(0.6f);
+                AudioPlayer.playWaveSound("pass");
+                
                 if (lives == 0)
                 {
                     StageManager.stages.pop();
+                    StageManager.stages.push(new CongratulationsStage(sector));
                     break;
                 }
             }
@@ -142,7 +147,7 @@ public class GameStage implements Stage
                 if (enemies.get(word.charAt(0) - 'a') == null && spawnCount < targetSpawns)
                 {
                     Behavior behavior = BasicBehavior.instance;
-                    if (LD32.random.nextInt(10) == 0)
+                    if (LD32.random.nextInt(15) == 0)
                     {
                         if (LD32.random.nextInt(2) == 0)
                             behavior = PickupLifeBehavior.instance;

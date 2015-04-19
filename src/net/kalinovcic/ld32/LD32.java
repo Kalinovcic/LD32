@@ -64,6 +64,7 @@ public class LD32
         AudioPlayer.addWaveSound("shoot", "/res/shoot.wav");
         AudioPlayer.addWaveSound("kill", "/res/kill.wav");
         AudioPlayer.addWaveSound("warn", "/res/warn.wav");
+        AudioPlayer.addWaveSound("pass", "/res/pass.wav");
         
         try
         {
