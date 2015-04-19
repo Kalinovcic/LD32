@@ -8,7 +8,7 @@ public class TutorialStage2 implements Stage
 {
     private Enemy enemy1 = new Enemy(null, "fighter", 0.0f, new DummyBehavior(LD32.textureBasic, 32, 1, 1, 1, LD32.WW / 2, 220, false));
     private Enemy enemy2 = new Enemy(null, "mothership", 0.0f, new DummyBehavior(LD32.textureSpawner, 64, 1, 1, 0, LD32.WW / 2, 430, false));
-    private Enemy enemy3 = new Enemy(null, "beacon", 0.0f, new DummyBehavior(LD32.textureBomb, 96, 1, 0, 0, LD32.WW / 2, 640, false));
+    private Enemy enemy3 = new Enemy(null, "beacon", 0.0f, new DummyBehavior(LD32.textureBomb, 48, 1, 0, 0, LD32.WW / 2, 640, false));
     
     public TutorialStage2()
     {

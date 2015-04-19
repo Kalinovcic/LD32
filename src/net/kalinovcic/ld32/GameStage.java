@@ -249,9 +249,11 @@ public class GameStage implements Stage
         else
             LD32.font.drawString(5, LD32.WH - 5, "Sector: " + sector + " - " + (int) ((spawnCount / (double) targetSpawns) * 100) + "%", 0.9f, -0.9f);
 
+        /*
         LD32.font.drawString(5, LD32.WH - 35, "maxs: " + maxSpeed, 0.9f, -0.9f);
         LD32.font.drawString(5, LD32.WH - 65, "time: " + spawnTime, 0.9f, -0.9f);
         LD32.font.drawString(5, LD32.WH - 95, "target: " + targetSpawns, 0.9f, -0.9f);
+        */
         
         float x = LD32.WW - 37;
         float y = LD32.WH - 37;
