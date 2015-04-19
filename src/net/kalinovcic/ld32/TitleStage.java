@@ -72,7 +72,7 @@ public class TitleStage implements Stage
         glColor3f(1.0f, 1.0f, 1.0f); LD32.font.drawString(130, x, "xit", 1.4f, -1.4f, TrueTypeFont.ALIGN_LEFT);
 
         glColor3f(0.7f, 0.7f, 0.7f);
-        LD32.font.drawString(LD32.WW / 2, LD32.WH - 5, "Copyright (c) 2015 Lovro Kalinovčić", 0.6f, -0.6f, TrueTypeFont.ALIGN_CENTER);
+        LD32.font.drawString(LD32.WW / 2, LD32.WH - 5, "Copyright (c) 2015 Lovro Kalinovcic", 0.6f, -0.6f, TrueTypeFont.ALIGN_CENTER);
 
         glTranslatef(LD32.WW / 2, 200 + (float) Math.sin(System.currentTimeMillis() / 250.0) * 20, 0);
         glRotatef((float) Math.cos(System.currentTimeMillis() / 250.0) * 5, 0, 0, 1);

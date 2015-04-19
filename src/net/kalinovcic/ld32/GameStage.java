@@ -3,6 +3,7 @@ package net.kalinovcic.ld32;
 import static org.lwjgl.opengl.GL11.*;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -284,7 +285,15 @@ public class GameStage implements Stage
         for (Bullet b : bullets)
             b.render();
         
-        for (Enemy e : alive)
+        List<Enemy> std = new ArrayList<Enemy>(alive);
+        std.sort(new Comparator<Enemy>() {
+            @Override
+            public int compare(Enemy o1, Enemy o2)
+            {
+                return Float.compare(o1.y, o2.y);
+            }
+        });
+        for (Enemy e : std)
             if (e != selected)
                 e.render();
         if (selected != null)
