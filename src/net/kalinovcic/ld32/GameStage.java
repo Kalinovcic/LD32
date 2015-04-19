@@ -108,18 +108,22 @@ public class GameStage implements Stage
             {
                 e.removeMe = true;
                 enemies.set(e.origc - 'a', null);
-                lives--;
-                livesLost++;
                 
-                AudioPlayer.setGain(0.5f);
-                AudioPlayer.setPitch(0.6f);
-                AudioPlayer.playWaveSound("pass");
-                
-                if (lives == 0)
+                if (!e.isPickup)
                 {
-                    StageManager.stages.pop();
-                    StageManager.stages.push(new CongratulationsStage(sector));
-                    break;
+                    lives--;
+                    livesLost++;
+                    
+                    AudioPlayer.setGain(0.5f);
+                    AudioPlayer.setPitch(0.6f);
+                    AudioPlayer.playWaveSound("pass");
+                    
+                    if (lives == 0)
+                    {
+                        StageManager.stages.pop();
+                        StageManager.stages.push(new CongratulationsStage(sector));
+                        break;
+                    }
                 }
             }
             if (e.removeMe)
