@@ -96,7 +96,7 @@ public class LD32
             Display.update();
             Display.sync(60);
         }
-
+                                                                                
         glDeleteTextures(texturePL);
         glDeleteTextures(textureSpawner);
         glDeleteTextures(textureBomb);

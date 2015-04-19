@@ -180,13 +180,13 @@ public class GameStage implements Stage
         glColor3f(1, 1, 1);
         glBindTexture(GL_TEXTURE_2D, LD32.textureBG);
         
-        float yoff = System.currentTimeMillis() % 30000 / 30000.0f;
+        float yoff = System.currentTimeMillis() % 60000 / 60000.0f;
         
         glBegin(GL_QUADS);
-        glTexCoord2f(0.0f, 1.0f + yoff); glVertex2f(0.0f, 0.0f);
-        glTexCoord2f(1.0f, 1.0f + yoff); glVertex2f(LD32.WW, 0.0f);
-        glTexCoord2f(1.0f, 0.0f + yoff); glVertex2f(LD32.WW, LD32.WH);
-        glTexCoord2f(0.0f, 0.0f + yoff); glVertex2f(0.0f, LD32.WH);
+        glTexCoord2f(0.5f + yoff, 0.0f); glVertex2f(0.0f, 0.0f);
+        glTexCoord2f(0.5f + yoff, 1.0f); glVertex2f(LD32.WW, 0.0f);
+        glTexCoord2f(0.0f + yoff, 1.0f); glVertex2f(LD32.WW, LD32.WH);
+        glTexCoord2f(0.0f + yoff, 0.0f); glVertex2f(0.0f, LD32.WH);
         glEnd();
         
         player.render();
