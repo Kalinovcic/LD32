@@ -85,4 +85,35 @@ public class Enemy extends Sprite
         
         glPopMatrix();
     }
+    
+    public void renderSpecial()
+    {
+        super.render();
+
+        if (word.length() <= 0) return;
+        
+        glPushMatrix();
+        glTranslatef(x, y - h / 2, 0.0f);
+
+        float w = LD32.font.getTotalWidth(word) + 8;
+        float h = LD32.font.getHeight();
+
+        if (x - w / 2.0f < 0) glTranslatef(-(x - w / 2.0f), 0.0f, 0.0f);
+        if (x + w / 2.0f > LD32.WW) glTranslatef(LD32.WW - (x + w / 2.0f), 0.0f, 0.0f);
+        if (y - this.h / 2 - h < 0) glTranslatef(0.0f, -(y - this.h / 2 - h), 0.0f);
+
+        glBindTexture(GL_TEXTURE_2D, 0);
+        glColor4f(0.4f, 0.4f, 1.0f, 0.9f);
+        glBegin(GL_QUADS);
+        glVertex2f(-w / 2.0f, 0.0f);
+        glVertex2f(w / 2.0f, 0.0f);
+        glVertex2f(w / 2.0f, -h);
+        glVertex2f(-w / 2.0f, -h);
+        glEnd();
+        
+        behavior.labelColor();
+        LD32.font.drawString(-4, 0.0f, word, 1.0f, -1.0f, TrueTypeFont.ALIGN_CENTER);
+        
+        glPopMatrix();
+    }
 }

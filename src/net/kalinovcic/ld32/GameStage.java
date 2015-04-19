@@ -149,7 +149,7 @@ public class GameStage implements Stage
                 calmTimer = 2.0;
             }
             */
-            if (missiles > 0 && Keyboard.getEventKeyState() && (Keyboard.getEventKey() == Keyboard.KEY_LCONTROL) || (Keyboard.getEventKey() == Keyboard.KEY_RCONTROL))
+            if (missiles > 0 && missileVictims.size() == 0 && Keyboard.getEventKeyState() && (Keyboard.getEventKey() == Keyboard.KEY_LCONTROL || Keyboard.getEventKey() == Keyboard.KEY_RCONTROL))
             {
                 for (char i = 'a'; i <= 'z'; i++)
                 {
@@ -182,11 +182,11 @@ public class GameStage implements Stage
                         enemies.set(selected.origc - 'a', null);
                         selected = null;
                     }
-                    // TODO: plink!
                 }
                 else
                 {
-                    // TODO: beep beep!
+                    AudioPlayer.setPitch(0.5f);
+                    AudioPlayer.playWaveSound("shoot");
                 }
             }
         }
@@ -234,7 +234,10 @@ public class GameStage implements Stage
         for (Bullet b : bullets)
             b.render();
         for (Enemy e : alive)
-            e.render();
+            if (e != selected)
+                e.render();
+        if (selected != null)
+            selected.renderSpecial();
         
         // GUI
 

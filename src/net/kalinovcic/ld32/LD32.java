@@ -28,6 +28,8 @@ public class LD32
     public static int textureBG;
     public static int textureBeam;
     
+    public static boolean sound = true;
+    
     public static void main(String[] args)
     {
         try
@@ -55,6 +57,10 @@ public class LD32
         textureMissile = TextureLoader.load("/res/missile.png");
         textureBG = TextureLoader.load("/res/background.png");
         textureBeam = TextureLoader.load("/res/beam.png");
+
+        AudioPlayer.openPlayer();
+        AudioPlayer.addWaveSound("shoot", "/res/shoot.wav");
+        AudioPlayer.addWaveSound("kill", "/res/kill.wav");
         
         try
         {
@@ -107,6 +113,8 @@ public class LD32
         glDeleteTextures(textureBG);
         glDeleteTextures(textureBeam);
         font.destroy();
+        
+        AudioPlayer.closePlayer();
         
         Keyboard.destroy();
         Display.destroy();

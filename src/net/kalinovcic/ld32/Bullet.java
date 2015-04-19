@@ -17,7 +17,7 @@ public class Bullet extends Sprite
         this.target = target;
         this.speed = speed;
         
-        SoundPlayer.playSound("/res/shoot.wav");
+        AudioPlayer.playWaveSound("shoot");
     }
     
     public void update(double timeDelta)
@@ -39,7 +39,10 @@ public class Bullet extends Sprite
             target.vely = Math.max(target.vely - 50, -0.1f);
             target.health--;
             if (target.health <= 0)
+            {
+                AudioPlayer.playWaveSound("kill");
                 target.removeMe = true;
+            }
         }
     }
     
