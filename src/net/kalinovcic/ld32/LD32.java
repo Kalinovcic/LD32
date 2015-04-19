@@ -32,7 +32,7 @@ public class LD32
     {
         try
         {
-            Display.setTitle("Integral type");
+            Display.setTitle("SpaceType");
             Display.setResizable(false);
             Display.setVSyncEnabled(true);
             Display.setDisplayMode(new DisplayMode(WW, WH));

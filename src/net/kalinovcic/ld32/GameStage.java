@@ -4,6 +4,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -32,6 +33,8 @@ public class GameStage implements Stage
     private long sector = 0;
 
     private double calmTimer;
+    private List<Enemy> missileVictims = new ArrayList<Enemy>();
+    private double missileCooldown;
     
     public GameStage()
     {
@@ -133,17 +136,30 @@ public class GameStage implements Stage
         
         while (Keyboard.next())
         {
-            if (missiles > 0 && Keyboard.getEventKeyState() && (Keyboard.getEventKey() == Keyboard.KEY_LCONTROL) || (Keyboard.getEventKey() == Keyboard.KEY_RCONTROL))
+            if (Keyboard.getEventKeyState() && (Keyboard.getEventKey() == Keyboard.KEY_F5))
             {
                 for (char i = 'a'; i <= 'z'; i++)
                     enemies.set(i - 'a', null);
-                for (Enemy e : alive)
-                    if (e.isPickup)
-                        ((PickupBehavior) e.behavior).onPickup(e);
                 alive.clear();
                 bullets.clear();
+
+                sector++;
+                spawnCount = 0;
+                calmTimer = 2.0;
+            }
+            if (missiles > 0 && Keyboard.getEventKeyState() && (Keyboard.getEventKey() == Keyboard.KEY_LCONTROL) || (Keyboard.getEventKey() == Keyboard.KEY_RCONTROL))
+            {
+                for (char i = 'a'; i <= 'z'; i++)
+                {
+                    Enemy e = enemies.get(i - 'a');
+                    if (e != null)
+                        missileVictims.add(e);
+                    enemies.set(i - 'a', null);
+                }
                 selected = null;
                 
+                selected = null;
+                missileCooldown = 0;
                 missiles--;
                 continue;
             }
@@ -169,6 +185,29 @@ public class GameStage implements Stage
                 else
                 {
                     // TODO: beep beep!
+                }
+            }
+        }
+        
+        if (missileVictims.size() > 0)
+        {
+            missileCooldown -= timeDelta;
+            while (missileCooldown < 0)
+            {
+                missileCooldown += 0.05;
+                
+                Iterator<Enemy> it = missileVictims.iterator();
+                while (it.hasNext())
+                {
+                    Enemy e = it.next();
+                    bullets.add(new Bullet(e.word.charAt(0), player.x, player.y, e, 800.0f));
+                    
+                    e.word = e.word.substring(1);
+                    if (e.word.length() == 0)
+                    {
+                        e.alive = false;
+                        it.remove();
+                    }
                 }
             }
         }
