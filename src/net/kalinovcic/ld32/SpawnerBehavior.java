@@ -46,7 +46,7 @@ public class SpawnerBehavior implements Behavior
         {
             enemy.cooldown += 2;
             char c = (char) (LD32.random.nextInt('z' - 'a' + 1) + 'a');
-            if (enemy.game.enemies.get(c - 'a') == null)
+            if (enemy.alive && enemy.game.enemies.get(c - 'a') == null)
             {
                 Enemy e = new Enemy(enemy.game, c + "", enemy.x, enemy.y, Math.max((float) enemy.game.maxSpeed * 0.2f, 50), BasicBehavior.instance);
                 enemy.game.toAdd.add(e);

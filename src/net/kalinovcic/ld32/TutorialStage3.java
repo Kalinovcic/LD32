@@ -51,7 +51,8 @@ public class TutorialStage3 implements Stage
         LD32.font.drawString(100, 155, "an extra life will save you.", 1, -1, TrueTypeFont.ALIGN_LEFT);
         LD32.font.drawString(40, 300, "Missile", 1.1f, -1.1f, TrueTypeFont.ALIGN_LEFT);
         LD32.font.drawString(100, 330, "Use this device to destroy all visible enemies", 1, -1, TrueTypeFont.ALIGN_LEFT);
-        LD32.font.drawString(100, 355, "before you are overwhelmed.", 1, -1, TrueTypeFont.ALIGN_LEFT);
+        LD32.font.drawString(100, 355, "before you are overwhelmed. Activate it with [LCONTROL] or", 1, -1, TrueTypeFont.ALIGN_LEFT);
+        LD32.font.drawString(100, 380, "[RCONTROL].", 1, -1, TrueTypeFont.ALIGN_LEFT);
         LD32.font.drawString(40, 500, "Your lives and missiles are displayed in the bottom right corner.", 1, -1, TrueTypeFont.ALIGN_LEFT);
         
         glPushMatrix();

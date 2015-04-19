@@ -17,7 +17,7 @@ public class BombBehavior implements Behavior
     @Override
     public float getSize()
     {
-        return 32;
+        return 48;
     }
     
     @Override
@@ -41,14 +41,30 @@ public class BombBehavior implements Behavior
     @Override
     public void update(Enemy enemy, double timeDelta)
     {
-        enemy.w = (float) (32 + (1.0 - (enemy.cooldown / 12.0f)) * 64);
-        enemy.h = (float) (32 + (1.0 - (enemy.cooldown / 12.0f)) * 64);
-        
+        long rvv11 = (long) enemy.cooldown;
         enemy.cooldown -= timeDelta;
-        if (enemy.cooldown < 0 && enemy.alive)
+        long rvv21 = (long) enemy.cooldown;
+        if (enemy.cooldown >= 0 && enemy.cooldown <= 3 && rvv11 != rvv21)
         {
-            enemy.removeMe = true;
-            
+            AudioPlayer.setGain(0.7f);
+            AudioPlayer.setPitch(0.9f);
+            AudioPlayer.playWaveSound("warn");
+        }
+
+        if (enemy.cooldown >= 0) enemy.texture = LD32.textureBomb;
+        if (enemy.cooldown < 0) enemy.texture = LD32.textureBombIn;
+
+        enemy.sppr = enemy.sppg = enemy.sppb = 1;
+        if (enemy.cooldown <= 3)
+            if ((int) (enemy.cooldown * 2) % 2 == 1)
+            {
+                enemy.sppr = 0;
+                enemy.sppg = enemy.sppb = 0;
+            }
+        
+        enemy.ang = (float) enemy.cooldown * 90;
+        
+        if (enemy.cooldown < 0 && enemy.cooldown + timeDelta >= 0)
             for (int i = 0; i < 10; i++)
             {
                 char c1 = (char) (LD32.random.nextInt('z' - 'a' + 1) + 'a');
@@ -62,6 +78,5 @@ public class BombBehavior implements Behavior
                     enemy.game.enemies.set(c1 - 'a', e);
                 }
             }
-        }
     }
 }

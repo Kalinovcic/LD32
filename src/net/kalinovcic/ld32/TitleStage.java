@@ -59,16 +59,16 @@ public class TitleStage implements Stage
         glEnd();
 
         float x = 0;
-        glColor3f(1.0f, 0.6f, 0.2f); LD32.font.drawString(100, x += 400, "T", 1.4f, -1.4f, TrueTypeFont.ALIGN_LEFT);
+        glColor3f(1.0f, 0.4f, 0.1f); LD32.font.drawString(100, x += 400, "T", 1.4f, -1.4f, TrueTypeFont.ALIGN_LEFT);
         glColor3f(1.0f, 1.0f, 1.0f); LD32.font.drawString(130, x, "utorial", 1.4f, -1.4f, TrueTypeFont.ALIGN_LEFT);
         
-        glColor3f(1.0f, 0.6f, 0.2f); LD32.font.drawString(100, x += 40, "P", 1.4f, -1.4f, TrueTypeFont.ALIGN_LEFT);
+        glColor3f(1.0f, 0.4f, 0.1f); LD32.font.drawString(100, x += 40, "P", 1.4f, -1.4f, TrueTypeFont.ALIGN_LEFT);
         glColor3f(1.0f, 1.0f, 1.0f); LD32.font.drawString(130, x, "lay", 1.4f, -1.4f, TrueTypeFont.ALIGN_LEFT);
         
-        glColor3f(1.0f, 0.6f, 0.2f); LD32.font.drawString(100, x += 80, "S", 1.4f, -1.4f, TrueTypeFont.ALIGN_LEFT);
+        glColor3f(1.0f, 0.4f, 0.1f); LD32.font.drawString(100, x += 80, "S", 1.4f, -1.4f, TrueTypeFont.ALIGN_LEFT);
         glColor3f(1.0f, 1.0f, 1.0f); LD32.font.drawString(130, x, "ound: " + (LD32.sound ? "on" : "off"), 1.4f, -1.4f, TrueTypeFont.ALIGN_LEFT);
         
-        glColor3f(1.0f, 0.6f, 0.2f); LD32.font.drawString(100, x += 40, "E", 1.4f, -1.4f, TrueTypeFont.ALIGN_LEFT);
+        glColor3f(1.0f, 0.4f, 0.1f); LD32.font.drawString(100, x += 40, "E", 1.4f, -1.4f, TrueTypeFont.ALIGN_LEFT);
         glColor3f(1.0f, 1.0f, 1.0f); LD32.font.drawString(130, x, "xit", 1.4f, -1.4f, TrueTypeFont.ALIGN_LEFT);
 
         glTranslatef(LD32.WW / 2, 200 + (float) Math.sin(System.currentTimeMillis() / 250.0) * 20, 0);

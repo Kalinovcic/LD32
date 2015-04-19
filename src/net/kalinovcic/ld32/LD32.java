@@ -23,6 +23,7 @@ public class LD32
     public static int textureBasic;
     public static int textureSpawner;
     public static int textureBomb;
+    public static int textureBombIn;
     public static int textureLife;
     public static int textureMissile;
     public static int textureBG;
@@ -53,6 +54,7 @@ public class LD32
         textureBasic = TextureLoader.load("/res/basic.png");
         textureSpawner = TextureLoader.load("/res/spawner.png");
         textureBomb = TextureLoader.load("/res/bomb.png");
+        textureBombIn = TextureLoader.load("/res/bombin.png");
         textureLife = TextureLoader.load("/res/life.png");
         textureMissile = TextureLoader.load("/res/missile.png");
         textureBG = TextureLoader.load("/res/background.png");
@@ -61,6 +63,7 @@ public class LD32
         AudioPlayer.openPlayer();
         AudioPlayer.addWaveSound("shoot", "/res/shoot.wav");
         AudioPlayer.addWaveSound("kill", "/res/kill.wav");
+        AudioPlayer.addWaveSound("warn", "/res/warn.wav");
         
         try
         {
@@ -108,6 +111,7 @@ public class LD32
         glDeleteTextures(textureBasic);
         glDeleteTextures(textureSpawner);
         glDeleteTextures(textureBomb);
+        glDeleteTextures(textureBombIn);
         glDeleteTextures(textureLife);
         glDeleteTextures(textureMissile);
         glDeleteTextures(textureBG);

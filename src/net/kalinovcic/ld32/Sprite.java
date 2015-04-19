@@ -9,6 +9,8 @@ public class Sprite
     public float w, h;
     public float ang;
     
+    public float sppr = 1, sppg = 1, sppb = 1;
+    
     public Sprite(int texture, float x, float y, float w, float h, float ang)
     {
         this.texture = texture;
@@ -25,7 +27,7 @@ public class Sprite
         glTranslatef(x, y, 0.0f);
         glRotatef(ang, 0.0f, 0.0f, 1.0f);
 
-        glColor3f(1.0f, 1.0f, 1.0f);
+        glColor3f(sppr, sppg, sppb);
         glBindTexture(GL_TEXTURE_2D, texture);
         glBegin(GL_QUADS);
         glTexCoord2f(0.0f, 0.0f); glVertex2f(-w / 2.0f, -h / 2.0f);

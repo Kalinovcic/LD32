@@ -53,11 +53,12 @@ public class GameStage implements Stage
             spawnCount = 0;
             
             calmTimer = 2.0;
+            spawnCountdown = 0;
         }
         
-        spawnTime = Math.max(5 - sector * 0.3, 1.0);
-        maxSpeed = Math.min(100 + sector * 15, 600.0);
-        targetSpawns = sector * 3;
+        spawnTime = Math.max(5 - Math.log10(sector) * 3, 1);
+        maxSpeed = Math.min(150 + Math.log10(sector) * 50, 300.0);
+        targetSpawns = 5 + (long) (Math.log10(sector) * 12);
         
         calmTimer -= timeDelta;
         if (calmTimer < 0) calmTimer = 0;
@@ -81,11 +82,6 @@ public class GameStage implements Stage
                 e.removeMe = true;
                 enemies.set(e.origc - 'a', null);
                 lives--;
-
-                for (char i = 'a'; i <= 'z'; i++)
-                    enemies.set(i - 'a', null);
-                alive.clear();
-                bullets.clear();
                 
                 if (lives == 0)
                 {
@@ -118,7 +114,7 @@ public class GameStage implements Stage
                 if (enemies.get(word.charAt(0) - 'a') == null && spawnCount < targetSpawns)
                 {
                     Behavior behavior = BasicBehavior.instance;
-                    if (LD32.random.nextInt(15) == 0)
+                    if (LD32.random.nextInt(10) == 0)
                     {
                         if (LD32.random.nextInt(2) == 0)
                             behavior = PickupLifeBehavior.instance;
@@ -127,9 +123,9 @@ public class GameStage implements Stage
                     }
                     else
                     {
-                        if (sector >= 2 && (LD32.random.nextInt(10) == 0))
+                        if (sector >= 2 && (LD32.random.nextInt(Math.max(10 - (int) (sector / 5), 2)) == 0))
                             behavior = SpawnerBehavior.instance;
-                        else if (sector >= 3 && (LD32.random.nextInt(15) == 0))
+                        else if (sector >= 3 && (LD32.random.nextInt(Math.max(15 - (int) (sector / 5), 2)) == 0))
                             behavior = BombBehavior.instance;
                     }
                     Enemy e = new Enemy(this, word, Math.max((float) maxSpeed - 30 * word.length(), 50), behavior);
@@ -142,7 +138,6 @@ public class GameStage implements Stage
         
         while (Keyboard.next())
         {
-            /*
             if (Keyboard.getEventKeyState() && (Keyboard.getEventKey() == Keyboard.KEY_F5))
             {
                 for (char i = 'a'; i <= 'z'; i++)
@@ -154,7 +149,6 @@ public class GameStage implements Stage
                 spawnCount = 0;
                 calmTimer = 2.0;
             }
-            */
             if (missiles > 0 && missileVictims.size() == 0 && Keyboard.getEventKeyState() && (Keyboard.getEventKey() == Keyboard.KEY_LCONTROL || Keyboard.getEventKey() == Keyboard.KEY_RCONTROL))
             {
                 for (char i = 'a'; i <= 'z'; i++)
@@ -239,6 +233,7 @@ public class GameStage implements Stage
         player.render();
         for (Bullet b : bullets)
             b.render();
+        
         for (Enemy e : alive)
             if (e != selected)
                 e.render();
@@ -253,6 +248,10 @@ public class GameStage implements Stage
             LD32.font.drawString(LD32.WW / 2, LD32.WH / 2, "Sector " + sector, 2.4f, -2.4f, TrueTypeFont.ALIGN_CENTER);
         else
             LD32.font.drawString(5, LD32.WH - 5, "Sector: " + sector + " - " + (int) ((spawnCount / (double) targetSpawns) * 100) + "%", 0.9f, -0.9f);
+
+        LD32.font.drawString(5, LD32.WH - 35, "maxs: " + maxSpeed, 0.9f, -0.9f);
+        LD32.font.drawString(5, LD32.WH - 65, "time: " + spawnTime, 0.9f, -0.9f);
+        LD32.font.drawString(5, LD32.WH - 95, "target: " + targetSpawns, 0.9f, -0.9f);
         
         float x = LD32.WW - 37;
         float y = LD32.WH - 37;
