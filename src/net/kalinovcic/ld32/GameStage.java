@@ -55,8 +55,8 @@ public class GameStage implements Stage
             calmTimer = 2.0;
         }
         
-        spawnTime = Math.max(5 - sector * 0.4, 1.0);
-        maxSpeed = Math.min(100 + sector * 20, 600.0);
+        spawnTime = Math.max(5 - sector * 0.3, 1.0);
+        maxSpeed = Math.min(100 + sector * 15, 600.0);
         targetSpawns = sector * 3;
         
         calmTimer -= timeDelta;
@@ -81,6 +81,12 @@ public class GameStage implements Stage
                 e.removeMe = true;
                 enemies.set(e.origc - 'a', null);
                 lives--;
+
+                for (char i = 'a'; i <= 'z'; i++)
+                    enemies.set(i - 'a', null);
+                alive.clear();
+                bullets.clear();
+                
                 if (lives == 0)
                 {
                     StageManager.stages.pop();

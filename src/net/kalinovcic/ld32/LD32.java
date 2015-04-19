@@ -84,7 +84,7 @@ public class LD32
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         
-        StageManager.stages.push(new GameStage());
+        StageManager.stages.push(new TitleStage());
         
         long prevTime = System.currentTimeMillis();
         
