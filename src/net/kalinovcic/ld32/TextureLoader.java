@@ -3,8 +3,8 @@ package net.kalinovcic.ld32;
 import static org.lwjgl.opengl.GL11.*;
 
 import java.awt.image.BufferedImage;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 
 import javax.imageio.ImageIO;
@@ -13,16 +13,16 @@ import org.lwjgl.BufferUtils;
 
 public class TextureLoader
 {
-    public static int load(String filename)
+    public static int load(String resource)
     {
-        return load(filename, 0, 0, -1, -1);
+        return load(resource, 0, 0, -1, -1);
     }
     
-    public static int load(String filename, int offx, int offy, int width, int height)
+    public static int load(String resource, int offx, int offy, int width, int height)
     {
         try
         {
-            FileInputStream fis = new FileInputStream(filename);
+            InputStream fis = LD32.class.getResourceAsStream(resource);
             BufferedImage image = ImageIO.read(fis);
             fis.close();
             

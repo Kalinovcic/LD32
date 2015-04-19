@@ -1,8 +1,9 @@
 package net.kalinovcic.ld32;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +15,9 @@ public class Dictionary
     {
         try
         {
-            BufferedReader bR = new BufferedReader(new FileReader("res/dict.txt"));
+            InputStream is = LD32.class.getResourceAsStream("/res/dict.txt");
+            InputStreamReader isr = new InputStreamReader(is);
+            BufferedReader bR = new BufferedReader(isr);
             String word;
             while ((word = bR.readLine()) != null)
                 words.add(word);

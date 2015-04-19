@@ -11,7 +11,7 @@ public class BasicBehavior implements Behavior
     @Override
     public int getTexture()
     {
-        return LD32.texturePL;
+        return LD32.textureBasic;
     }
     
     @Override

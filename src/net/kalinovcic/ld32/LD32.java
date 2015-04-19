@@ -2,7 +2,6 @@ package net.kalinovcic.ld32;
 
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
-import java.io.File;
 import java.util.Random;
 
 import javax.swing.JOptionPane;
@@ -21,6 +20,7 @@ public class LD32
     public static Random random = new Random();
     public static TrueTypeFont font;
     public static int texturePL;
+    public static int textureBasic;
     public static int textureSpawner;
     public static int textureBomb;
     public static int textureLife;
@@ -46,18 +46,19 @@ public class LD32
         }
         
         Dictionary.load();
-
-        texturePL = TextureLoader.load("res/pl.png");
-        textureSpawner = TextureLoader.load("res/spawner.png");
-        textureBomb = TextureLoader.load("res/bomb.png");
-        textureLife = TextureLoader.load("res/life.png");
-        textureMissile = TextureLoader.load("res/missile.png");
-        textureBG = TextureLoader.load("res/background.png");
-        textureBeam = TextureLoader.load("res/beam.png");
+        
+        texturePL = TextureLoader.load("/res/pl.png");
+        textureBasic = TextureLoader.load("/res/basic.png");
+        textureSpawner = TextureLoader.load("/res/spawner.png");
+        textureBomb = TextureLoader.load("/res/bomb.png");
+        textureLife = TextureLoader.load("/res/life.png");
+        textureMissile = TextureLoader.load("/res/missile.png");
+        textureBG = TextureLoader.load("/res/background.png");
+        textureBeam = TextureLoader.load("/res/beam.png");
         
         try
         {
-            Font rf = Font.createFont(Font.TRUETYPE_FONT, new File("res/FreeSans.ttf"));
+            Font rf = Font.createFont(Font.TRUETYPE_FONT, LD32.class.getResourceAsStream("/res/FreeSans.ttf"));
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(rf);
             font = new TrueTypeFont(new Font("FreeSans", Font.PLAIN, 24), true, null);
@@ -98,6 +99,7 @@ public class LD32
         }
                                                                                 
         glDeleteTextures(texturePL);
+        glDeleteTextures(textureBasic);
         glDeleteTextures(textureSpawner);
         glDeleteTextures(textureBomb);
         glDeleteTextures(textureLife);
