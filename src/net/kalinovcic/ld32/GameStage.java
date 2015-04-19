@@ -35,6 +35,15 @@ public class GameStage implements Stage
     private double calmTimer;
     private List<Enemy> missileVictims = new ArrayList<Enemy>();
     private double missileCooldown;
+
+    private long startTime;
+    private long shipsDestroyed;
+    private long hits;
+    private long misses;
+    private long shipsDestroyedByMissiles;
+    private long missilesFired;
+    private long pickupsCollected;
+    private long livesLost;
     
     public GameStage()
     {
@@ -54,6 +63,22 @@ public class GameStage implements Stage
             
             calmTimer = 2.0;
             spawnCountdown = 0;
+            
+            long ctime = System.currentTimeMillis();
+            double duration = (ctime - startTime) / 1000.0;
+            
+            if (sector > 1)
+                StageManager.stages.push(new SectorClearStage(duration, shipsDestroyed, hits, misses,
+                        shipsDestroyedByMissiles, missilesFired, pickupsCollected, livesLost));
+            
+            shipsDestroyed = 0;
+            startTime = -1;
+            hits = 0;
+            misses = 0;
+            shipsDestroyedByMissiles = 0;
+            missilesFired = 0;
+            pickupsCollected = 0;
+            livesLost = 0;
         }
         
         spawnTime = Math.max(5 - Math.log10(sector) * 3, 1);
@@ -63,6 +88,8 @@ public class GameStage implements Stage
         calmTimer -= timeDelta;
         if (calmTimer < 0) calmTimer = 0;
         else return;
+        if (startTime == -1)
+            startTime = System.currentTimeMillis();
         
         Set<Bullet> removeMeBullets = new HashSet<Bullet>();
         for (Bullet b : bullets)
@@ -82,6 +109,7 @@ public class GameStage implements Stage
                 e.removeMe = true;
                 enemies.set(e.origc - 'a', null);
                 lives--;
+                livesLost++;
                 
                 if (lives == 0)
                 {
@@ -138,6 +166,7 @@ public class GameStage implements Stage
         
         while (Keyboard.next())
         {
+            /*
             if (Keyboard.getEventKeyState() && (Keyboard.getEventKey() == Keyboard.KEY_F5))
             {
                 for (char i = 'a'; i <= 'z'; i++)
@@ -149,6 +178,7 @@ public class GameStage implements Stage
                 spawnCount = 0;
                 calmTimer = 2.0;
             }
+            */
             if (missiles > 0 && missileVictims.size() == 0 && Keyboard.getEventKeyState() && (Keyboard.getEventKey() == Keyboard.KEY_LCONTROL || Keyboard.getEventKey() == Keyboard.KEY_RCONTROL))
             {
                 for (char i = 'a'; i <= 'z'; i++)
@@ -163,6 +193,7 @@ public class GameStage implements Stage
                 selected = null;
                 missileCooldown = 0;
                 missiles--;
+                missilesFired++;
                 continue;
             }
             char c = Keyboard.getEventCharacter();
@@ -180,13 +211,19 @@ public class GameStage implements Stage
                     {
                         selected.alive = false;
                         enemies.set(selected.origc - 'a', null);
+                        if (selected.isPickup)
+                            pickupsCollected++;
+                        else
+                            shipsDestroyed++;
                         selected = null;
                     }
+                    hits++;
                 }
                 else
                 {
                     AudioPlayer.setPitch(0.5f);
                     AudioPlayer.playWaveSound("shoot");
+                    misses++;
                 }
             }
         }
@@ -208,6 +245,10 @@ public class GameStage implements Stage
                     if (e.word.length() == 0)
                     {
                         e.alive = false;
+                        if (e.isPickup)
+                            pickupsCollected++;
+                        else
+                            shipsDestroyedByMissiles++;
                         it.remove();
                     }
                 }
