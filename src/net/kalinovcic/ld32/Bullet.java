@@ -16,6 +16,8 @@ public class Bullet extends Sprite
         this.wl = wl;
         this.target = target;
         this.speed = speed;
+        
+        SoundPlayer.playSound("/res/shoot.wav");
     }
     
     public void update(double timeDelta)

@@ -136,6 +136,7 @@ public class GameStage implements Stage
         
         while (Keyboard.next())
         {
+            /*
             if (Keyboard.getEventKeyState() && (Keyboard.getEventKey() == Keyboard.KEY_F5))
             {
                 for (char i = 'a'; i <= 'z'; i++)
@@ -147,6 +148,7 @@ public class GameStage implements Stage
                 spawnCount = 0;
                 calmTimer = 2.0;
             }
+            */
             if (missiles > 0 && Keyboard.getEventKeyState() && (Keyboard.getEventKey() == Keyboard.KEY_LCONTROL) || (Keyboard.getEventKey() == Keyboard.KEY_RCONTROL))
             {
                 for (char i = 'a'; i <= 'z'; i++)
