@@ -71,7 +71,7 @@ public class LD32
             Font rf = Font.createFont(Font.TRUETYPE_FONT, LD32.class.getResourceAsStream("/res/FreeSans.ttf"));
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(rf);
-            font = new TrueTypeFont(new Font("FreeSans", Font.PLAIN, 24), true, null);
+            font = new TrueTypeFont(new Font("FreeSans", Font.PLAIN, 24), true, new char[] { 'č', 'ć' });
         }
         catch (Exception e)
         {
