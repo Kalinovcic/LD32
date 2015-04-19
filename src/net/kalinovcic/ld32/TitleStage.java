@@ -22,9 +22,15 @@ public class TitleStage implements Stage
                 AudioPlayer.playWaveSound("shoot");
                 break;
             }
-            if (Keyboard.getEventKeyState() && Keyboard.getEventKey() == Keyboard.KEY_P)
+            if (Keyboard.getEventKeyState() && Keyboard.getEventKey() == Keyboard.KEY_N)
             {
-                StageManager.stages.push(new GameStage());
+                StageManager.stages.push(new GameStage(0));
+                AudioPlayer.playWaveSound("shoot");
+                break;
+            }
+            if (Keyboard.getEventKeyState() && Keyboard.getEventKey() == Keyboard.KEY_E)
+            {
+                StageManager.stages.push(new GameStage(14));
                 AudioPlayer.playWaveSound("shoot");
                 break;
             }
@@ -34,7 +40,7 @@ public class TitleStage implements Stage
                 AudioPlayer.playWaveSound("shoot");
                 break;
             }
-            if (Keyboard.getEventKeyState() && Keyboard.getEventKey() == Keyboard.KEY_E)
+            if (Keyboard.getEventKeyState() && Keyboard.getEventKey() == Keyboard.KEY_Q)
             {
                 StageManager.stages.pop();
                 AudioPlayer.playWaveSound("shoot");
@@ -62,14 +68,17 @@ public class TitleStage implements Stage
         glColor3f(1.0f, 0.4f, 0.1f); LD32.font.drawString(100, x += 400, "T", 1.4f, -1.4f, TrueTypeFont.ALIGN_LEFT);
         glColor3f(1.0f, 1.0f, 1.0f); LD32.font.drawString(130, x, "utorial", 1.4f, -1.4f, TrueTypeFont.ALIGN_LEFT);
         
-        glColor3f(1.0f, 0.4f, 0.1f); LD32.font.drawString(100, x += 40, "P", 1.4f, -1.4f, TrueTypeFont.ALIGN_LEFT);
-        glColor3f(1.0f, 1.0f, 1.0f); LD32.font.drawString(130, x, "lay", 1.4f, -1.4f, TrueTypeFont.ALIGN_LEFT);
+        glColor3f(1.0f, 0.4f, 0.1f); LD32.font.drawString(100, x += 40, "N", 1.4f, -1.4f, TrueTypeFont.ALIGN_LEFT);
+        glColor3f(1.0f, 1.0f, 1.0f); LD32.font.drawString(130, x, "ormal mode", 1.4f, -1.4f, TrueTypeFont.ALIGN_LEFT);
+        
+        glColor3f(1.0f, 0.4f, 0.1f); LD32.font.drawString(100, x += 40, "E", 1.4f, -1.4f, TrueTypeFont.ALIGN_LEFT);
+        glColor3f(1.0f, 1.0f, 1.0f); LD32.font.drawString(130, x, "xpert mode", 1.4f, -1.4f, TrueTypeFont.ALIGN_LEFT);
         
         glColor3f(1.0f, 0.4f, 0.1f); LD32.font.drawString(100, x += 80, "S", 1.4f, -1.4f, TrueTypeFont.ALIGN_LEFT);
         glColor3f(1.0f, 1.0f, 1.0f); LD32.font.drawString(130, x, "ound: " + (LD32.sound ? "on" : "off"), 1.4f, -1.4f, TrueTypeFont.ALIGN_LEFT);
         
-        glColor3f(1.0f, 0.4f, 0.1f); LD32.font.drawString(100, x += 40, "E", 1.4f, -1.4f, TrueTypeFont.ALIGN_LEFT);
-        glColor3f(1.0f, 1.0f, 1.0f); LD32.font.drawString(130, x, "xit", 1.4f, -1.4f, TrueTypeFont.ALIGN_LEFT);
+        glColor3f(1.0f, 0.4f, 0.1f); LD32.font.drawString(100, x += 40, "Q", 1.4f, -1.4f, TrueTypeFont.ALIGN_LEFT);
+        glColor3f(1.0f, 1.0f, 1.0f); LD32.font.drawString(130, x, "uit", 1.4f, -1.4f, TrueTypeFont.ALIGN_LEFT);
 
         glColor3f(0.7f, 0.7f, 0.7f);
         LD32.font.drawString(LD32.WW / 2, LD32.WH - 5, "Copyright (c) 2015 Lovro Kalinovcic", 0.6f, -0.6f, TrueTypeFont.ALIGN_CENTER);

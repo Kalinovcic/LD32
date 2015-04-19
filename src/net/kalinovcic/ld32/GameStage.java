@@ -32,7 +32,8 @@ public class GameStage implements Stage
     private long spawnCount;
 
     private long sector = 0;
-
+    private long lie = 0;
+    
     private double calmTimer;
     private List<Enemy> missileVictims = new ArrayList<Enemy>();
     private double missileCooldown;
@@ -46,12 +47,21 @@ public class GameStage implements Stage
     private long pickupsCollected;
     private long livesLost;
     
-    public GameStage()
+    private boolean first = true;
+    
+    public GameStage(long lie)
     {
+        this.lie = lie;
         player = new Sprite(LD32.texturePL, LD32.WW / 2, LD32.WH - 40, 64, 64, 0.0f);
         
         for (char i = 'a'; i <= 'z'; i++)
             enemies.add(null);
+        
+        if (lie != 0)
+        {
+            lives = 4;
+            missiles = 1;
+        }
     }
     
     @Override
@@ -68,9 +78,10 @@ public class GameStage implements Stage
             long ctime = System.currentTimeMillis();
             double duration = (ctime - startTime) / 1000.0;
             
-            if (sector > 1)
+            if (!first)
                 StageManager.stages.push(new SectorClearStage(duration, shipsDestroyed, hits, misses,
                         shipsDestroyedByMissiles, missilesFired, pickupsCollected, livesLost));
+            first = false;
             
             shipsDestroyed = 0;
             startTime = -1;
@@ -82,9 +93,9 @@ public class GameStage implements Stage
             livesLost = 0;
         }
         
-        spawnTime = Math.max(5 - Math.log10(sector) * 3, 1);
-        maxSpeed = Math.min(150 + Math.log10(sector) * 50, 300.0);
-        targetSpawns = 5 + (long) (Math.log10(sector) * 12);
+        spawnTime = Math.max(5 - Math.log10(lie + sector) * 3, 1);
+        maxSpeed = Math.min(150 + Math.log10(lie + sector) * 50, 300.0);
+        targetSpawns = 5 + (long) (Math.log10(lie + sector) * 12);
         
         calmTimer -= timeDelta;
         if (calmTimer < 0) calmTimer = 0;
@@ -161,9 +172,9 @@ public class GameStage implements Stage
                     }
                     else
                     {
-                        if (sector >= 2 && (LD32.random.nextInt(Math.max(10 - (int) (sector / 5), 2)) == 0))
+                        if (lie + sector >= 2 && (LD32.random.nextInt(Math.max(10 - (int) (lie + sector / 5), 2)) == 0))
                             behavior = SpawnerBehavior.instance;
-                        else if (sector >= 3 && (LD32.random.nextInt(Math.max(15 - (int) (sector / 5), 2)) == 0))
+                        else if (lie + sector >= 3 && (LD32.random.nextInt(Math.max(15 - (int) (lie + sector / 5), 2)) == 0))
                             behavior = BombBehavior.instance;
                     }
                     Enemy e = new Enemy(this, word, Math.max((float) maxSpeed - 30 * word.length(), 50), behavior);
