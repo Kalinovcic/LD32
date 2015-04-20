@@ -3,6 +3,7 @@ package net.kalinovcic.ld32;
 import static org.lwjgl.opengl.GL11.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -297,7 +298,7 @@ public class GameStage implements Stage
             b.render();
         
         List<Enemy> std = new ArrayList<Enemy>(alive);
-        std.sort(new Comparator<Enemy>() {
+        Collections.sort(std, new Comparator<Enemy>() {
             @Override
             public int compare(Enemy o1, Enemy o2)
             {
